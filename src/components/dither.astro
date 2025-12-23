@@ -1,0 +1,52 @@
+---
+import DitherComponent from './Dither';
+
+interface Props {
+  waveSpeed?: number;
+  waveFrequency?: number;
+  waveAmplitude?: number;
+  waveColor?: [number, number, number];
+  colorNum?: number;
+  pixelSize?: number;
+  disableAnimation?: boolean;
+  enableMouseInteraction?: boolean;
+  mouseRadius?: number;
+  className?: string;
+}
+
+const {
+  waveSpeed = 0.025,
+  waveFrequency = 3,
+  waveAmplitude = 0.3,
+  waveColor = [0.25, 0.25, 0.25],
+  colorNum = 4,
+  pixelSize = 2,
+  disableAnimation = false,
+  enableMouseInteraction = false,
+  mouseRadius = 1,
+  className,
+} = Astro.props as Props;
+---
+
+<div class="dither-container">
+  <DitherComponent
+    client:only="react"
+    waveSpeed={waveSpeed}
+    waveFrequency={waveFrequency}
+    waveAmplitude={waveAmplitude}
+    waveColor={waveColor}
+    colorNum={colorNum}
+    pixelSize={pixelSize}
+    disableAnimation={disableAnimation}
+    enableMouseInteraction={enableMouseInteraction}
+    mouseRadius={mouseRadius}
+    className={className}
+  />
+</div>
+
+<style>
+  .dither-container {
+    position: absolute;
+    inset: 0;
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
-
+import { Font } from "astro:assets";
+import Dither from "../components/dither.astro";
 ---
 
 <html lang="en">
@@ -9,8 +10,219 @@
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
+		<Font cssVariable="--font-mono" preload />
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<div class="container">
+			<div class="header">
+				<div class="who">
+					<h1>Casey Zumwalt</h1>
+					<span class="what">Product / Design / Engineering</span>
+				</div>
+				<span class="neat-unicode-characters">▛▞▞▞▟</span>
+				<nav class="where">
+					<ul role="navigation">
+						<li><a href="https://x.com/zumwalt">X</a></li>
+						<li><a href="https://www.linkedin.com/in/zumwalt/">LinkedIn</a></li>
+						<li><a href="https://github.com/zumwalt">GitHub</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="content">
+				<Dither />
+			</div>
+			<div class="footer">
+				<span id="age">0</span>
+				<span id="now-watching"></span>
+			</div>
+		</div>
 	</body>
 </html>
+
+<script>
+	// Count current age with as many decimal places as needed,
+	// animating the change every tenth of a second
+	// Birth time: 6pm CT (Central Time) on Oct 17, 1984
+	// In October 1984, CT was CDT (UTC-5), so 6pm CDT = 11pm UTC
+	const birthDate = new Date("1984-10-17T23:00:00Z"); // 6pm CT = 11pm UTC
+	
+	function updateAge() {
+		const currentDate = new Date();
+		const ageInMilliseconds = currentDate.getTime() - birthDate.getTime();
+		const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+		const ageString = ageInYears.toFixed(12);
+		const ageElement = document.getElementById("age");
+		if (ageElement) {
+			ageElement.innerHTML = ageString;
+		}
+	}
+	
+	// Update immediately and then every 100ms (tenth of a second)
+	updateAge();
+	setInterval(updateAge, 100);
+
+	// Fetch and display "now watching" data
+	async function fetchNowWatching() {
+		try {
+			const response = await fetch("https://api.casey.computer/v1/now-watching");
+			const data = await response.json();
+			
+			if (data.ok && data.item) {
+				const watchingElement = document.getElementById("now-watching");
+				if (watchingElement) {
+					const { kind, title, year } = data.item;
+					const status = data.isWatching ? "Currently watching" : "Last watched";
+					watchingElement.textContent = `${status} ${title} (${year})`;
+				}
+			}
+		} catch (error) {
+			console.error("Failed to fetch now watching data:", error);
+		}
+	}
+
+	// Fetch on page load
+	fetchNowWatching();
+</script>
+
+
+<style>
+	:root {
+		--font-size: 0.75rem;
+	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	body {
+		background-color: #000;
+		color: #fff;
+		font-family: var(--font-mono);
+		font-size: var(--font-size);
+		height: 100vh;
+		margin: 0;
+		padding: 1rem 1.5rem;
+		position: relative;
+	}
+
+	h1 {
+		font-size: var(--font-size);
+		margin: 0;
+	}
+
+	a {
+		color: #fff;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: space-between;
+		height: 100%;
+		gap: 1rem;
+	}
+
+	.header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		position: relative;
+	}
+
+	.who,
+	.where {
+		width: 50%;
+
+		@media screen and (min-width: 768px) {
+			width: auto;
+		}
+	}
+
+	.who {
+		display: flex;
+		flex-direction: column;
+		
+		@media screen and (min-width: 768px) {
+			align-items: center;
+			flex-direction: row;
+		}
+	}
+
+	.what {
+		@media screen and (min-width: 768px) {
+			&:before {
+				content: "—";
+				margin: 0 0.5rem;
+			}
+		}
+	}
+
+	.neat-unicode-characters {
+		display: none;
+
+		@media screen and (min-width: 768px) {
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+
+	.where ul {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: space-between;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+
+		@media screen and (min-width: 768px) {
+			align-items: center;
+			flex-direction: row;
+			gap: 0.5rem;
+
+			li:after {
+				content: " — ";
+			}
+
+			li:last-child:after {
+				content: "";
+				margin-left: 0;
+			}
+		}
+	}
+
+	.content {
+		position: relative;
+		height: 100%;
+
+		h2 {
+			position: relative;
+			z-index: 2;
+		}
+	}
+
+	.footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		text-align: center;
+		text-wrap: balance;
+
+		@media screen and (min-width: 768px) {
+			flex-direction: row;
+		}
+	}
+</style>
