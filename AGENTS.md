@@ -7,10 +7,11 @@
 - **Preview**: `pnpm preview`
 
 ## Project Stack
-- Astro 5 (static site generator)
+- Astro 5 with SSR (Vercel adapter)
 - React 19 + TypeScript (strict mode via `astro/tsconfigs/strict`)
 - Three.js + @react-three/fiber + postprocessing for 3D/WebGL
 - CSS modules for styling (see `Dither.css`)
+- Middleware for reverse proxy (`/2012/*` → `https://zumwalt.github.io`)
 
 ## Code Style
 - **Functions**: Use function declarations (not arrow functions) for components

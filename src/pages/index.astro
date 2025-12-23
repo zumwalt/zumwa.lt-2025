@@ -1,6 +1,9 @@
 ---
 import { Font } from "astro:assets";
 import Dither from "../components/dither.astro";
+
+const title = "Casey Zumwalt";
+const description = "Product / Design / Engineering";
 ---
 
 <html lang="en">
@@ -9,7 +12,8 @@ import Dither from "../components/dither.astro";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
 		<Font cssVariable="--font-mono" preload />
 	</head>
 	<body>
