@@ -115,8 +115,30 @@ import Dither from "../components/dither.astro";
 	a {
 		color: #fff;
 		text-decoration: none;
+		position: relative;
+		display: inline-block;
+		padding: 0;
+		overflow: hidden;
+		transition: color 0.25s ease;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background-color: #fff;
+			transition: left 0.25s ease;
+			z-index: -1;
+		}
+
 		&:hover {
-			text-decoration: underline;
+			color: #000;
+			
+			&::before {
+				left: 0;
+			}
 		}
 	}
 
@@ -186,13 +208,19 @@ import Dither from "../components/dither.astro";
 		padding: 0;
 		margin: 0;
 
+		li {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
 		@media screen and (min-width: 768px) {
 			align-items: center;
 			flex-direction: row;
 			gap: 0.5rem;
 
 			li:after {
-				content: " — ";
+				content: "—";
 			}
 
 			li:last-child:after {
