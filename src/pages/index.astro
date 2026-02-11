@@ -1,52 +1,46 @@
 ---
 import { Font } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
 import Dither from "../components/dither.astro";
 
 const title = "Casey Zumwalt";
 const description = "Product / Design / Engineering";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
+<Layout title={title} description={description}>
+	<Fragment slot="head">
 		<Font cssVariable="--font-mono" preload />
 		<script async src="https://plausible.io/js/pa-00Fm0Qb6_LpY62ceKuttX.js"></script>
 		<script>
 			window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
 			plausible.init()
 		</script>
-	</head>
-	<body>
-		<div class="container">
-			<div class="header">
-				<div class="who">
-					<h1>Casey Zumwalt</h1>
-					<span class="what">Product / Design / Engineering</span>
-				</div>
-				<span class="neat-unicode-characters">▛▞▞▞▟</span>
-				<nav class="where">
-					<ul role="navigation">
-						<li><a href="https://x.com/zumwalt">X</a></li>
-						<li><a href="https://www.linkedin.com/in/zumwalt/">LinkedIn</a></li>
-						<li><a href="https://github.com/zumwalt">GitHub</a></li>
-					</ul>
-				</nav>
+	</Fragment>
+
+	<div class="container">
+		<div class="header">
+			<div class="who">
+				<h1>Casey Zumwalt</h1>
+				<span class="what">Product / Design / Engineering</span>
 			</div>
-			<div class="content">
-				<Dither />
-			</div>
-			<div class="footer">
-				<span id="age">0</span>
-				<span id="now-watching"></span>
-			</div>
+			<span class="neat-unicode-characters">▛▞▞▞▟</span>
+			<nav class="where">
+				<ul role="navigation">
+					<li><a href="https://x.com/zumwalt">X</a></li>
+					<li><a href="https://www.linkedin.com/in/zumwalt/">LinkedIn</a></li>
+					<li><a href="https://github.com/zumwalt">GitHub</a></li>
+				</ul>
+			</nav>
 		</div>
-	</body>
-</html>
+		<div class="content">
+			<Dither />
+		</div>
+		<div class="footer">
+			<span id="age">0</span>
+			<span id="now-watching"></span>
+		</div>
+	</div>
+</Layout>
 
 <script>
 	// Count current age with as many decimal places as needed,
@@ -54,7 +48,7 @@ const description = "Product / Design / Engineering";
 	// Birth time: 6pm CT (Central Time) on Oct 17, 1984
 	// In October 1984, CT was CDT (UTC-5), so 6pm CDT = 11pm UTC
 	const birthDate = new Date("1984-10-17T23:00:00Z"); // 6pm CT = 11pm UTC
-	
+
 	function updateAge() {
 		const currentDate = new Date();
 		const ageInMilliseconds = currentDate.getTime() - birthDate.getTime();
@@ -65,7 +59,7 @@ const description = "Product / Design / Engineering";
 			ageElement.innerHTML = ageString;
 		}
 	}
-	
+
 	// Update immediately and then every 100ms (tenth of a second)
 	updateAge();
 	setInterval(updateAge, 100);
@@ -75,7 +69,7 @@ const description = "Product / Design / Engineering";
 		try {
 			const response = await fetch("https://api.casey.computer/v1/now-watching");
 			const data = await response.json();
-			
+
 			if (data.ok && data.item) {
 				const watchingElement = document.getElementById("now-watching");
 				if (watchingElement) {
@@ -144,7 +138,7 @@ const description = "Product / Design / Engineering";
 
 		&:hover {
 			color: #000;
-			
+
 			&::before {
 				left: 0;
 			}
@@ -180,7 +174,7 @@ const description = "Product / Design / Engineering";
 	.who {
 		display: flex;
 		flex-direction: column;
-		
+
 		@media screen and (min-width: 768px) {
 			align-items: center;
 			flex-direction: row;
