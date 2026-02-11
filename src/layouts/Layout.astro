@@ -1,0 +1,27 @@
+---
+import { FixtureProvider } from "@fixture-inc/tracker-react";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		<slot name="head" />
+	</head>
+	<body>
+		<FixtureProvider client:load propertyId="8bc9d108-51c1-443d-91ef-1a449b82316c">
+			<slot />
+		</FixtureProvider>
+	</body>
+</html>
